@@ -34,7 +34,7 @@ class Player {
 
 private:
     /// Sets the corresponding ledStates bitflag to true
-    void setLedOn(int shiftRegisterIndex);
+    void setLedOn(unsigned int shiftRegisterIndex);
 
 public:
     Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin);

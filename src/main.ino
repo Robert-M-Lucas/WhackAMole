@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "Player.h"
 
+void register_output(uint8_t state);
+
 pin DATA_PIN = 4;
 pin CLOCK_PIN = 6;
 pin LATCH_PIN = 5;
@@ -24,10 +26,28 @@ void setup() {
 
     // Target must be randomised AFTER random seed is set
     p1.randomiseTarget();
+
+    // Pre-game delay
+    // Clear register
+    for (int _ = 0; _ < 40; _ ++) {
+        register_output(random(256));
+        delay(100);
+    }
+    register_output(0);
+    delay(1000);
 }
 
 void update(unsigned long tick) {
     p1.update(tick);
+}
+
+void register_output(uint8_t state) {
+    // Shift data out to register
+    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, state);
+
+    // Push shift register to actual output
+    digitalWrite(LATCH_PIN, HIGH);
+    digitalWrite(LATCH_PIN, LOW);
 }
 
 void display() {
@@ -35,12 +55,7 @@ void display() {
     uint8_t registerState = 0b00000000;
     registerState |= p1.getLedBitFlags();
 
-    // Shift data out to register
-    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, registerState);
-
-    // Push shift register to actual output
-    digitalWrite(LATCH_PIN, HIGH);
-    digitalWrite(LATCH_PIN, LOW);
+    register_output(registerState);
 }
 
 unsigned long tick = 0;

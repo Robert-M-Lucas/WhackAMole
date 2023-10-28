@@ -11,7 +11,7 @@ Player::Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inp
     pinMode(inputPin, INPUT);
 }
 
-void Player::setLedOn(int shiftRegisterIndex) {
+void Player::setLedOn(unsigned int shiftRegisterIndex) {
     ledStates |= 1 << shiftRegisterIndex;
 }
 
