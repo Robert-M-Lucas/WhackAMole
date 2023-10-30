@@ -58,6 +58,7 @@ void display() {
     register_output(registerState);
 }
 
+// Suitable size, will take 50 days to overflow
 unsigned long tick = 0;
 unsigned long tick_interval = 10;
 
