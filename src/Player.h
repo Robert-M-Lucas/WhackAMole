@@ -44,6 +44,8 @@ public:
     void update(unsigned long tick);
 
     uint8_t getLedBitFlags();
+
+    unsigned int getScore();
 };
 
 

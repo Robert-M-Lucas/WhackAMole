@@ -76,3 +76,7 @@ uint8_t Player::getLedBitFlags() {
 void Player::randomiseTarget() {
     target = random(3);
 }
+
+unsigned int Player::getScore() {
+    return score;
+}
