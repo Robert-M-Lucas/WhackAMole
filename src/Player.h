@@ -15,7 +15,7 @@ class Player {
     unsigned int successLedIndex;
 
     /// State of LEDs while they are randomly blinking
-    bool randomLedStates[3];
+    bool randomLedStates[3] = {false, false, false};
     /// When the LEDs were last randomised
     unsigned long randomShowStart = 0;
 
@@ -48,7 +48,7 @@ public:
     void update(unsigned long tick);
 
     /// Returns the current LED states as bitflags
-    uint8_t getLedBitFlags();
+    uint8_t getLedBitFlags() const;
 
     int getScore() const;
 };

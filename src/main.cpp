@@ -51,6 +51,10 @@ void setup() {
     delay(1000);
 }
 
+[[noreturn]] void waitForever() {
+    while (true) { delay(1000); }
+}
+
 /// Checks for a winning player
 void checkWin() {
     int winner = -1;
@@ -78,9 +82,7 @@ void checkWin() {
         lcd.print("Press reset");
         lcd.setCursor(0, 1);
         lcd.print("to play again");
-        while (true) {
-            delay(1000);
-        }
+        waitForever();
     }
 }
 

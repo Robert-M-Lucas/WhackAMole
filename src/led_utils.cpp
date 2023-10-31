@@ -21,10 +21,10 @@ void flash_leds() {
 
 void register_output(uint8_t stateOne, uint8_t stateTwo) {
     // Shift data out to register
-    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, stateTwo);
-    shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, stateOne);
+    shiftOut(SR_DATA_PIN, SR_CLOCK_PIN, MSBFIRST, stateTwo);
+    shiftOut(SR_DATA_PIN, SR_CLOCK_PIN, MSBFIRST, stateOne);
 
     // Push shift register to actual output
-    digitalWrite(LATCH_PIN, HIGH);
-    digitalWrite(LATCH_PIN, LOW);
+    digitalWrite(SR_LATCH_PIN, HIGH);
+    digitalWrite(SR_LATCH_PIN, LOW);
 }

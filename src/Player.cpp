@@ -74,12 +74,12 @@ void Player::update(unsigned long tick) {
     }
 }
 
-uint8_t Player::getLedBitFlags() {
+uint8_t Player::getLedBitFlags() const {
     return ledStates;
 }
 
 void Player::randomiseTarget() {
-    target = random(3);
+    target = (int) random(3);
 }
 
 int Player::getScore() const {
