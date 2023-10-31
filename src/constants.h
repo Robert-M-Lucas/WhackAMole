@@ -8,12 +8,14 @@
 #include "definitions.h"
 
 /// Score needed to win
-const int WIN_THRESHOLD = 10;
+const int WIN_THRESHOLD = 1;
 
 // Shift register pins
 const pin SR_DATA_PIN = 13;
-const pin SR_CLOCK_PIN = 11;
+const pin SR_CLOCK_PIN = A4;
 const pin SR_LATCH_PIN = 12;
+
+const pin PIEZO_PIN = 11;
 
 // Source of random seed pin (must be analogue)
 const pin RANDOM_SEED_PIN = A0;

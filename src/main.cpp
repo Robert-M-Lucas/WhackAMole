@@ -41,6 +41,7 @@ void setup() {
     lcd.print("Starting game...");
     Serial.println("Starting game");
 
+
     // Target must be randomised AFTER random seed is set
     p1.randomiseTarget();
     p2.randomiseTarget();
@@ -70,7 +71,6 @@ void checkWin() {
     }
 
     if (winner != -1) {
-        play_game_end_sound();
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Game Over!");
@@ -79,6 +79,7 @@ void checkWin() {
         lcd.print(winner);
         lcd.print(" wins!");
         flash_leds();
+        play_game_end_sound();
         delay(3000);
         lcd.setCursor(0, 0);
         lcd.print("Press reset");
