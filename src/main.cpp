@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "constants.h"
 #include "led_utils.h"
+#include "piezo.h"
 
 unsigned long led_interval = INITIAL_INTERVAL;
 
@@ -40,7 +41,6 @@ void setup() {
     lcd.print("Starting game...");
     Serial.println("Starting game");
 
-
     // Target must be randomised AFTER random seed is set
     p1.randomiseTarget();
     p2.randomiseTarget();
@@ -48,6 +48,7 @@ void setup() {
 
     // Pre-game delay + shift register clear
     flash_leds();
+    play_game_start_sound();
     delay(1000);
 }
 
@@ -69,6 +70,7 @@ void checkWin() {
     }
 
     if (winner != -1) {
+        play_game_end_sound();
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Game Over!");

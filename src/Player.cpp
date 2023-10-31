@@ -6,6 +6,7 @@
 #include <Arduino.h>
 #include "definitions.h"
 #include "constants.h"
+#include "piezo.h"
 
 
 Player::Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin, unsigned long* interval):
@@ -42,10 +43,12 @@ void Player::update(unsigned long tick) {
                 lastPointScored = true;
                 score += 1;
                 *interval -= INTERVAL_DECREMENT_ON_POINT;
+                play_point_scored_sound();
             } else {
                 lastPointScored = false;
                 score -= 1;
                 *interval += INTERVAL_DECREMENT_ON_POINT;
+                play_point_lost_sound();
             }
 
             randomiseTarget();
