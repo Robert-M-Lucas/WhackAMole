@@ -6,8 +6,13 @@
 #include <Arduino.h>
 #include "definitions.h"
 
-Player::Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin):
-    ledIndexes{ledIndexes[0], ledIndexes[1], ledIndexes[2]}, successLedIndex(successLedIndex), inputPin(inputPin) {
+const unsigned long SHOW_TARGET_TIME = 3000;
+const unsigned long TARGET_BLINK_INTERVAL = 500;
+const unsigned long ALL_LEDS_OFF_PERIOD = 1000;
+const unsigned long INTERVAL_DECREMENT_ON_POINT = 5;
+
+Player::Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin, unsigned long* interval):
+    ledIndexes{ledIndexes[0], ledIndexes[1], ledIndexes[2]}, successLedIndex(successLedIndex), inputPin(inputPin), interval(interval) {
     pinMode(inputPin, INPUT);
 }
 
@@ -21,9 +26,9 @@ void Player::update(unsigned long tick) {
 
 
     // Showing next target
-    if (time_without_target < 3000) {
+    if (time_without_target < SHOW_TARGET_TIME) {
         // Blink new target every 500ms
-        if ((time_without_target / 500) % 2 == 0) {
+        if ((time_without_target / TARGET_BLINK_INTERVAL) % 2 == 0) {
             setLedOn(ledIndexes[target]);
         }
 
@@ -32,23 +37,25 @@ void Player::update(unsigned long tick) {
             setLedOn(successLedIndex);
         }
     }
-    else if (time_without_target < 4000) {}
+    else if (time_without_target < SHOW_TARGET_TIME + ALL_LEDS_OFF_PERIOD) {}
     // Normal play
     else {
         if (digitalRead(inputPin) == HIGH) {
             if (randomLedStates[target]) {
                 lastPointScored = true;
                 score += 1;
+                *interval -= INTERVAL_DECREMENT_ON_POINT;
             } else {
                 lastPointScored = false;
                 score -= 1;
+                *interval += INTERVAL_DECREMENT_ON_POINT;
             }
 
             randomiseTarget();
             showingTargetStart = tick;
         }
         else  {
-            if (tick - randomShowStart > 220) {
+            if (tick - randomShowStart > *interval) {
                 randomShowStart = tick;
 
                 for (int i = 0; i < 3; i++) {

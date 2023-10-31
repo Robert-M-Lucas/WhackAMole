@@ -32,12 +32,14 @@ class Player {
 
     int score = 0;
 
+    unsigned long* interval;
+
 private:
     /// Sets the corresponding ledStates bitflag to true
     void setLedOn(unsigned int shiftRegisterIndex);
 
 public:
-    Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin);
+    Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin, unsigned long* interval);
 
     void randomiseTarget();
 
