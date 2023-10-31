@@ -30,7 +30,7 @@ class Player {
 
     pin inputPin;
 
-    unsigned int score = 0;
+    int score = 0;
 
 private:
     /// Sets the corresponding ledStates bitflag to true
@@ -45,7 +45,7 @@ public:
 
     uint8_t getLedBitFlags();
 
-    unsigned int getScore();
+    int getScore() const;
 };
 
 

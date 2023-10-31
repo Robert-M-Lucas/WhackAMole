@@ -13,14 +13,14 @@ pin RANDOM_SEED_PIN = A0;
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 
 // Shift register indexes for player 1
-unsigned int p1Leds[3] = {0, 1, 2};
-Player p1(p1Leds, 3, 8);
+unsigned int p1Leds[3] = {4, 5, 6};
+Player p1(p1Leds, 7, 10);
 
-unsigned int p2Leds[3] = {4, 5, 6};
-Player p2(p2Leds, 7, 9);
+unsigned int p2Leds[3] = {0, 1, 2};
+Player p2(p2Leds, 3, 9);
 
 unsigned int p3Leds[3] = {0, 1, 2};
-Player p3(p1Leds, 3, 11);
+Player p3(p3Leds, 3, 8);
 
 void setup() {
     Serial.begin(9600);
@@ -38,6 +38,8 @@ void setup() {
 
     // Target must be randomised AFTER random seed is set
     p1.randomiseTarget();
+    p2.randomiseTarget();
+    p3.randomiseTarget();
 
     // Pre-game delay
     // Clear register
@@ -56,6 +58,8 @@ void setup() {
 
 void update(unsigned long tick) {
     p1.update(tick);
+    p2.update(tick);
+    p3.update(tick);
 }
 
 void register_output(uint8_t stateOne, uint8_t stateTwo) {
@@ -70,14 +74,16 @@ void register_output(uint8_t stateOne, uint8_t stateTwo) {
 
 void show_leds() {
     // Get register output state as bit flags
-    uint8_t registerState = 0b00000000;
-    registerState |= p1.getLedBitFlags();
+    uint8_t registerStateOne = 0b00000000;
+    uint8_t registerStateTwo = 0b00000000;
+    registerStateOne |= p1.getLedBitFlags();
+    registerStateOne |= p2.getLedBitFlags();
+    registerStateTwo |= p3.getLedBitFlags();
 
-    register_output(registerState, 0);
+    register_output(registerStateOne, registerStateTwo);
 }
 
 void update_display() {
-    Serial.println("Display update");
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("P1:");
@@ -96,7 +102,7 @@ unsigned long tick_interval = 10;
 
 void loop() {
     update_display();
-    for (int _ = 0; _ < 100; _++) {
+    for (int _ = 0; _ < 50; _++) {
         update(tick);
         show_leds();
         delay(tick_interval);

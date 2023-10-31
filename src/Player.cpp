@@ -41,13 +41,14 @@ void Player::update(unsigned long tick) {
                 score += 1;
             } else {
                 lastPointScored = false;
+                score -= 1;
             }
 
             randomiseTarget();
             showingTargetStart = tick;
         }
         else  {
-            if (tick - randomShowStart > 500) {
+            if (tick - randomShowStart > 220) {
                 randomShowStart = tick;
 
                 for (int i = 0; i < 3; i++) {
@@ -77,6 +78,6 @@ void Player::randomiseTarget() {
     target = random(3);
 }
 
-unsigned int Player::getScore() {
+int Player::getScore() const {
     return score;
 }
