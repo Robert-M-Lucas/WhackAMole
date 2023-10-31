@@ -8,6 +8,7 @@
 #include <Arduino.h>
 #include "definitions.h"
 
+/// Class handling all player-specific behaviours
 class Player {
     /// Stores the shift register output indexes for each LED
     unsigned int ledIndexes[3];
