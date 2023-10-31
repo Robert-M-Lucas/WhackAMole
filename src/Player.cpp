@@ -5,11 +5,8 @@
 #include "Player.h"
 #include <Arduino.h>
 #include "definitions.h"
+#include "constants.h"
 
-const unsigned long SHOW_TARGET_TIME = 3000;
-const unsigned long TARGET_BLINK_INTERVAL = 500;
-const unsigned long ALL_LEDS_OFF_PERIOD = 1000;
-const unsigned long INTERVAL_DECREMENT_ON_POINT = 5;
 
 Player::Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin, unsigned long* interval):
     ledIndexes{ledIndexes[0], ledIndexes[1], ledIndexes[2]}, successLedIndex(successLedIndex), inputPin(inputPin), interval(interval) {

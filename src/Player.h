@@ -26,12 +26,14 @@ class Player {
     unsigned long showingTargetStart = 0;
     int target = 0;
 
+    /// Whether the last button press resulted in a point scored
     bool lastPointScored = false;
 
     pin inputPin;
 
     int score = 0;
 
+    /// Pointer to the LED blink interval
     unsigned long* interval;
 
 private:
@@ -45,6 +47,7 @@ public:
 
     void update(unsigned long tick);
 
+    /// Returns the current LED states as bitflags
     uint8_t getLedBitFlags();
 
     int getScore() const;
