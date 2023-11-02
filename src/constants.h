@@ -21,6 +21,8 @@ const pin DIFFICULTY_PIN = A3;
 
 const unsigned long MINIMUM_DIFFICULTY = 200;
 const unsigned long MAXIMUM_DIFFICULTY = 500;
+const unsigned long MINIMUM_GAMEPLAY_DIFFICULTY = 180;
+const unsigned long MAXIMUM_GAMEPLAY_DIFFICULTY = 600;
 const unsigned long DIFFICULTY_PICK_TIME_MS = 10000;
 
 // Source of random seed pin (must be analogue)

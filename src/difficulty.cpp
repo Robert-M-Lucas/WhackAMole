@@ -4,6 +4,7 @@
 
 #include "difficulty.h"
 #include <Arduino.h>
+#include <Servo.h>
 #include <LiquidCrystal.h>
 #include "constants.h"
 
@@ -11,7 +12,9 @@
 void display(LiquidCrystal *lcd, unsigned long interval, int seconds_remaining) {
     lcd->clear();
     lcd->setCursor(0, 0);
+    lcd->print("Difficulty: ");
     lcd->print(interval);
+    lcd->print("ms");
 
     lcd->setCursor(0, 1);
     lcd->print("Starting in: ");
@@ -19,16 +22,20 @@ void display(LiquidCrystal *lcd, unsigned long interval, int seconds_remaining) 
     lcd->print("s");
 }
 
-/// Allow the user to pick the difficulty
-unsigned long pick_game_difficulty(LiquidCrystal *lcd) {
+unsigned long pick_game_difficulty(LiquidCrystal *lcd, Servo *servo) {
     int millis_remaining = DIFFICULTY_PICK_TIME_MS;
     unsigned long interval = 300;
+    unsigned long prev_interval = interval;
 
     while (millis_remaining > 0) {
         // Convert analogue reading 0 - 1023 to difficulty MIN - MAX
         interval = map(analogRead(DIFFICULTY_PIN), 0, 1023, MINIMUM_DIFFICULTY, MAXIMUM_DIFFICULTY);
 
-        display(lcd, interval, millis_remaining / 1000);
+        if (interval != prev_interval) {
+            display(lcd, interval, millis_remaining / 1000);
+        }
+
+        servo->write(constrain(map(interval, MINIMUM_DIFFICULTY, MAXIMUM_DIFFICULTY, 0, 180), 0, 180));
 
         delay(200);
         millis_remaining -= 200;

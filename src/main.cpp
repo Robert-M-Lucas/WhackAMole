@@ -52,13 +52,14 @@ void setup() {
 
     // Pre-game delay + shift register clear
     flash_leds();
-    led_interval = pick_game_difficulty(&lcd); // Allow the user to set the difficulty
+    led_interval = pick_game_difficulty(&lcd, &servo); // Allow the user to set the difficulty
     play_game_start_sound();
 
     // Offset the builtin millis() function to be at 0 when gameplay starts
     tick_offset = millis();
 }
 
+/// Do nothing forever
 [[noreturn]] void waitForever() {
     while (true) { delay(1000); }
 }
@@ -113,6 +114,7 @@ void update(unsigned long tick) {
     p2.update(tick);
     p3.update(tick);
 
+    led_interval = constrain(led_interval, MINIMUM_GAMEPLAY_DIFFICULTY, MAXIMUM_DIFFICULTY);
     servo.write(constrain(map(led_interval, 200, 400, 0, 180), 0, 180));
     check_win();
 }

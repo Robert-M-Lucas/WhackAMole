@@ -6,8 +6,10 @@
 #define WHACKAMOLE_DIFFICULTY_H
 
 #include <LiquidCrystal.h>
+#include <Servo.h>
 
-unsigned long pick_game_difficulty(LiquidCrystal* lcd);
+/// Allow the user to pick the difficulty
+unsigned long pick_game_difficulty(LiquidCrystal* lcd, Servo *servo);
 
 
 #endif //WHACKAMOLE_DIFFICULTY_H

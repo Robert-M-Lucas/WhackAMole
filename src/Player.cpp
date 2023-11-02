@@ -14,14 +14,15 @@ Player::Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inp
     pinMode(inputPin, INPUT);
 }
 
+/// Sets the LED bitflag at the given position to on
 void Player::setLedOn(unsigned int shiftRegisterIndex) {
     ledStates |= 1 << shiftRegisterIndex;
 }
 
+/// PLayer update loop
 void Player::update(unsigned long tick) {
     ledStates = 0;
     unsigned long time_without_target = tick - showingTargetStart;
-
 
     // Showing next target
     if (time_without_target < SHOW_TARGET_TIME) {
@@ -35,25 +36,31 @@ void Player::update(unsigned long tick) {
             setLedOn(successLedIndex);
         }
     }
+    // Show nothing for a short period
     else if (time_without_target < SHOW_TARGET_TIME + ALL_LEDS_OFF_PERIOD) {}
     // Normal play
     else {
+        // On button press
         if (digitalRead(inputPin) == HIGH) {
+            // Point is scored (target LED is on)
             if (randomLedStates[target]) {
                 lastPointScored = true;
                 score += 1;
-                *interval -= INTERVAL_DECREMENT_ON_POINT;
+                *interval -= INTERVAL_DECREMENT_ON_POINT; // Adjust difficulty
                 play_point_scored_sound();
-            } else {
+            }
+            // No point scored
+            else {
                 lastPointScored = false;
                 score -= 1;
-                *interval += INTERVAL_DECREMENT_ON_POINT;
+                *interval += INTERVAL_DECREMENT_ON_POINT; // Adjust difficulty
                 play_point_lost_sound();
             }
 
             randomiseTarget();
             showingTargetStart = tick;
         }
+        // On no button press
         else  {
             if (tick - randomShowStart > *interval) {
                 randomShowStart = tick;
