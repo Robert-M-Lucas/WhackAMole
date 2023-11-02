@@ -20,7 +20,7 @@ void flash_leds() {
 }
 
 void register_output(uint8_t stateOne, uint8_t stateTwo) {
-    // Shift data out to register
+    // Shift data out to register - must be done is reverse (SR2 then SR1 as the first 8 bits are pushed out of SR1 into SR2 by the second byte)
     shiftOut(SR_DATA_PIN, SR_CLOCK_PIN, MSBFIRST, stateTwo);
     shiftOut(SR_DATA_PIN, SR_CLOCK_PIN, MSBFIRST, stateOne);
 
