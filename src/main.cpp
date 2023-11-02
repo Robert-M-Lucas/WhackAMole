@@ -140,8 +140,8 @@ void update_lcd() {
     lcd.print("ms");
 }
 
-unsigned long tick_interval = 10;
-unsigned int lcd_update_interval = 75;
+unsigned long tick_interval = 5;
+unsigned int lcd_update_interval = 150;
 
 void loop() {
     update_lcd(); // Run LCD update less frequently as it takes longer to refresh
