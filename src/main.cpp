@@ -5,8 +5,9 @@
 #include "constants.h"
 #include "led_utils.h"
 #include "piezo.h"
+#include "difficulty.h"
 
-unsigned long led_interval = INITIAL_INTERVAL;
+unsigned long led_interval = 300;
 
 // Initialise LCD
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
@@ -23,6 +24,8 @@ unsigned int p3Leds[3] = {0, 1, 2};
 Player p3(p3Leds, 3, 8, &led_interval);
 
 Servo servo;
+
+unsigned long tick_offset = 0;
 
 void setup() {
     pinMode(RANDOM_SEED_PIN, INPUT);
@@ -49,8 +52,11 @@ void setup() {
 
     // Pre-game delay + shift register clear
     flash_leds();
+    led_interval = pick_game_difficulty(&lcd); // Allow the user to set the difficulty
     play_game_start_sound();
-    delay(1000);
+
+    // Offset the builtin millis() function to be at 0 when gameplay starts
+    tick_offset = millis();
 }
 
 [[noreturn]] void waitForever() {
@@ -58,7 +64,7 @@ void setup() {
 }
 
 /// Checks for a winning player
-void checkWin() {
+void check_win() {
     int winner = -1;
     if (p1.getScore() >= WIN_THRESHOLD) {
         winner = 1;
@@ -108,7 +114,7 @@ void update(unsigned long tick) {
     p3.update(tick);
 
     servo.write(constrain(map(led_interval, 200, 400, 0, 180), 0, 180));
-    checkWin();
+    check_win();
 }
 
 /// Updates the LCD display
@@ -128,17 +134,15 @@ void update_lcd() {
     lcd.print("ms");
 }
 
-// Suitable size, will take 50 days to overflow
-unsigned long tick = 0;
 unsigned long tick_interval = 10;
+unsigned int lcd_update_interval = 75;
 
 void loop() {
     update_lcd(); // Run LCD update less frequently as it takes longer to refresh
 
-    for (int _ = 0; _ < 75; _++) {
-        update(tick);
+    for (unsigned int _ = 0; _ < lcd_update_interval; _++) {
+        update(millis() - tick_offset);
         show_leds();
         delay(tick_interval);
-        tick += tick_interval; // Note: doesn't account for time spent doing updates. Discrepancy should be minimal.
     }
 }
