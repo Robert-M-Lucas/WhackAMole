@@ -7,6 +7,7 @@
 #include <LiquidCrystal.h>
 #include "constants.h"
 
+/// Helper function for pick_game_difficulty to display to the lcd
 void display(LiquidCrystal *lcd, unsigned long interval, int seconds_remaining) {
     lcd->clear();
     lcd->setCursor(0, 0);
@@ -18,12 +19,15 @@ void display(LiquidCrystal *lcd, unsigned long interval, int seconds_remaining) 
     lcd->print("s");
 }
 
+/// Allow the user to pick the difficulty
 unsigned long pick_game_difficulty(LiquidCrystal *lcd) {
-    int millis_remaining = 10000;
+    int millis_remaining = DIFFICULTY_PICK_TIME_MS;
     unsigned long interval = 300;
 
     while (millis_remaining > 0) {
-        interval = map(analogRead(DIFFICULTY_PIN), 0, 1023, 200, 500);
+        // Convert analogue reading 0 - 1023 to difficulty MIN - MAX
+        interval = map(analogRead(DIFFICULTY_PIN), 0, 1023, MINIMUM_DIFFICULTY, MAXIMUM_DIFFICULTY);
+
         display(lcd, interval, millis_remaining / 1000);
 
         delay(200);

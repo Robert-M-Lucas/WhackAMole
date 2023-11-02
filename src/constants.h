@@ -19,6 +19,10 @@ const pin PIEZO_PIN = 11;
 
 const pin DIFFICULTY_PIN = A3;
 
+const unsigned long MINIMUM_DIFFICULTY = 200;
+const unsigned long MAXIMUM_DIFFICULTY = 500;
+const unsigned long DIFFICULTY_PICK_TIME_MS = 10000;
+
 // Source of random seed pin (must be analogue)
 const pin RANDOM_SEED_PIN = A0;
 
