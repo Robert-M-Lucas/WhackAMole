@@ -12,7 +12,7 @@
 void display(LiquidCrystal *lcd, unsigned long interval, int seconds_remaining) {
     lcd->clear();
     lcd->setCursor(0, 0);
-    lcd->print("Difficulty: ");
+    lcd->print("Init. Lvl: ");
     lcd->print(interval);
     lcd->print("ms");
 

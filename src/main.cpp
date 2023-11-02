@@ -6,6 +6,7 @@
 #include "led_utils.h"
 #include "piezo.h"
 #include "difficulty.h"
+#include "instructions.h"
 
 unsigned long led_interval = 300;
 
@@ -14,14 +15,14 @@ LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 
 // Shift register indexes for player 1 leds
 unsigned int p1Leds[3] = {4, 5, 6};
-Player p1(p1Leds, 7, 10, &led_interval);
+Player p1(p1Leds, 7, P1_BTN, &led_interval);
 
 // sim.
 unsigned int p2Leds[3] = {0, 1, 2};
-Player p2(p2Leds, 3, 9, &led_interval);
+Player p2(p2Leds, 3, P2_BTN, &led_interval);
 
 unsigned int p3Leds[3] = {0, 1, 2};
-Player p3(p3Leds, 3, 8, &led_interval);
+Player p3(p3Leds, 3, P3_BTN, &led_interval);
 
 Servo servo;
 
@@ -52,6 +53,9 @@ void setup() {
 
     // Pre-game delay + shift register clear
     flash_leds();
+
+    show_instructions(&lcd);
+
     led_interval = pick_game_difficulty(&lcd, &servo); // Allow the user to set the difficulty
     play_game_start_sound();
 
