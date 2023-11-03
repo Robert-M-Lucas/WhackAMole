@@ -53,6 +53,7 @@ void Player::update(unsigned long tick) {
             else {
                 lastPointScored = false;
                 score -= 1;
+                if (score < -9) score = -9;
                 *interval += INTERVAL_DECREMENT_ON_POINT; // Adjust difficulty
                 play_point_lost_sound();
             }
