@@ -7,6 +7,7 @@
 #include "led_utils.h"
 
 void flash_leds() {
+    Serial.println("Flashing LEDs");
     for (int i = 0; i < 20; i ++) {
         if (i % 2 == 0) {
             register_output(255, 255);

@@ -15,14 +15,14 @@ LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 
 // Shift register indexes for player 1 leds
 unsigned int p1Leds[3] = {4, 5, 6};
-Player p1(p1Leds, 7, P1_BTN, &led_interval);
+Player p1(1, p1Leds, 7, P1_BTN, &led_interval);
 
 // sim.
 unsigned int p2Leds[3] = {0, 1, 2};
-Player p2(p2Leds, 3, P2_BTN, &led_interval);
+Player p2(2, p2Leds, 3, P2_BTN, &led_interval);
 
 unsigned int p3Leds[3] = {0, 1, 2};
-Player p3(p3Leds, 3, P3_BTN, &led_interval);
+Player p3(3, p3Leds, 3, P3_BTN, &led_interval);
 
 Servo servo;
 
@@ -38,18 +38,14 @@ void setup() {
     randomSeed(analogRead(RANDOM_SEED_PIN));
 
     Serial.begin(9600);
+    Serial.println("[RESTART]");
+
+    print_config();
 
     servo.attach(A5);
 
     lcd.begin(16, 2);
     lcd.print("Starting game...");
-    Serial.println("Starting game");
-
-
-    // Target must be randomised AFTER random seed is set
-    p1.randomiseTarget();
-    p2.randomiseTarget();
-    p3.randomiseTarget();
 
     // Pre-game delay + shift register clear
     flash_leds();
@@ -59,12 +55,21 @@ void setup() {
     led_interval = pick_game_difficulty(&lcd, &servo); // Allow the user to set the difficulty
     play_game_start_sound();
 
+    // Target must be randomised AFTER random seed is set
+    p1.randomiseTarget();
+    p2.randomiseTarget();
+    p3.randomiseTarget();
+
     // Offset the builtin millis() function to be at 0 when gameplay starts
     tick_offset = millis();
+    Serial.print("Tick offset: "); Serial.println(tick_offset);
+
+    Serial.println("Game start");
 }
 
 /// Do nothing forever
 [[noreturn]] void waitForever() {
+    Serial.println("Waiting forever");
     while (true) { delay(1000); }
 }
 
@@ -82,6 +87,9 @@ void check_win() {
     }
 
     if (winner != -1) {
+        Serial.println("Game ended");
+        Serial.print("Player "); Serial.print(winner); Serial.println(" won");
+        Serial.println("Showing win text");
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Game Over!");
@@ -92,10 +100,13 @@ void check_win() {
         flash_leds();
         play_game_end_sound();
         delay(3000);
+
+        Serial.println("Showing restart text");
         lcd.setCursor(0, 0);
         lcd.print("Press reset");
         lcd.setCursor(0, 1);
         lcd.print("to play again");
+
         waitForever();
     }
 }
@@ -118,9 +129,16 @@ void update(unsigned long tick) {
     p2.update(tick);
     p3.update(tick);
 
-    led_interval = constrain(led_interval, MINIMUM_GAMEPLAY_DIFFICULTY, MAXIMUM_DIFFICULTY);
-    servo.write(constrain(map(led_interval, 200, 400, 0, 180), 0, 180));
-    check_win();
+    int highest_score = 0;
+    highest_score = max(highest_score, p1.getScore());
+    highest_score = max(highest_score, p2.getScore());
+    highest_score = max(highest_score, p3.getScore());
+
+    led_interval = constrain(led_interval, MINIMUM_GAMEPLAY_DIFFICULTY, MAXIMUM_GAMEPLAY_DIFFICULTY);
+    // Show highest score on servo
+    servo.write((int) map(constrain(highest_score, 0, WIN_THRESHOLD), 0, WIN_THRESHOLD, 0, 180));
+
+    if (highest_score >= WIN_THRESHOLD) check_win();
 }
 
 /// Updates the LCD display
