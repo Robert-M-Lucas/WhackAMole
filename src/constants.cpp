@@ -1,6 +1,3 @@
-//
-// Created by rober on 04/11/2023.
-//
 #include "constants.h"
 #include <Arduino.h>
 

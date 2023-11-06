@@ -1,7 +1,3 @@
-//
-// Created by robertlucas on 02/11/23.
-//
-
 #include "instructions.h"
 #include <Arduino.h>
 #include "constants.h"

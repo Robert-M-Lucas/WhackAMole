@@ -1,7 +1,3 @@
-//
-// Created by rober on 28/10/2023.
-//
-
 #include "Player.h"
 #include <Arduino.h>
 #include "definitions.h"

@@ -1,7 +1,3 @@
-//
-// Created by robertlucas on 31/10/23.
-//
-
 #include <Arduino.h>
 #include "constants.h"
 #include "tones.h"

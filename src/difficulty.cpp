@@ -1,7 +1,3 @@
-//
-// Created by robertlucas on 02/11/23.
-//
-
 #include "difficulty.h"
 #include <Arduino.h>
 #include <Servo.h>

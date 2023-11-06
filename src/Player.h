@@ -1,7 +1,3 @@
-//
-// Created by rober on 28/10/2023.
-//
-
 #ifndef WHACKAMOLE_PLAYER_H
 #define WHACKAMOLE_PLAYER_H
 

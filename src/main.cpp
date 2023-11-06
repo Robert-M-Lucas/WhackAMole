@@ -39,7 +39,6 @@ void setup() {
 
     Serial.begin(9600);
     Serial.println("[RESTART]");
-
     print_config();
 
     servo.attach(A5);
@@ -53,6 +52,7 @@ void setup() {
     show_instructions(&lcd);
 
     led_interval = pick_game_difficulty(&lcd, &servo); // Allow the user to set the difficulty
+
     play_game_start_sound();
 
     // Target must be randomised AFTER random seed is set
@@ -125,6 +125,7 @@ void show_leds() {
 
 /// Updates the game state
 void update(unsigned long tick) {
+    // Update the players
     p1.update(tick);
     p2.update(tick);
     p3.update(tick);
@@ -134,6 +135,7 @@ void update(unsigned long tick) {
     highest_score = max(highest_score, p2.getScore());
     highest_score = max(highest_score, p3.getScore());
 
+    // Make sure that the difficulty isn't out of bounds
     led_interval = constrain(led_interval, MINIMUM_GAMEPLAY_DIFFICULTY, MAXIMUM_GAMEPLAY_DIFFICULTY);
     // Show highest score on servo
     servo.write((int) map(constrain(highest_score, 0, WIN_THRESHOLD), 0, WIN_THRESHOLD, 0, 180));
