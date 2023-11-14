@@ -1,7 +1,3 @@
-//
-// Created by rober on 31/10/2023.
-//
-
 #ifndef WHACKAMOLE_LED_UTILS_H
 #define WHACKAMOLE_LED_UTILS_H
 

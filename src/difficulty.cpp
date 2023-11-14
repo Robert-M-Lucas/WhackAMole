@@ -1,7 +1,3 @@
-//
-// Created by robertlucas on 02/11/23.
-//
-
 #include "difficulty.h"
 #include <Arduino.h>
 #include <Servo.h>
@@ -23,6 +19,7 @@ void display(LiquidCrystal *lcd, unsigned long interval, int seconds_remaining) 
 }
 
 unsigned long pick_game_difficulty(LiquidCrystal *lcd, Servo *servo) {
+    Serial.println("Picking game difficulty");
     int millis_remaining = DIFFICULTY_PICK_TIME_MS;
     unsigned long interval = 300;
     unsigned long prev_interval = interval;
@@ -41,5 +38,6 @@ unsigned long pick_game_difficulty(LiquidCrystal *lcd, Servo *servo) {
         millis_remaining -= 200;
     }
 
+    Serial.print("Difficulty "); Serial.print(interval); Serial.println(" selected");
     return interval;
 }

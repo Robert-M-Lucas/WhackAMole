@@ -1,7 +1,3 @@
-//
-// Created by robertlucas on 02/11/23.
-//
-
 #ifndef WHACKAMOLE_DIFFICULTY_H
 #define WHACKAMOLE_DIFFICULTY_H
 

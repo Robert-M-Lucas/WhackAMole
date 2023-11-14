@@ -1,7 +1,3 @@
-//
-// Created by rober on 28/10/2023.
-//
-
 #ifndef WHACKAMOLE_PLAYER_H
 #define WHACKAMOLE_PLAYER_H
 
@@ -10,6 +6,9 @@
 
 /// Class handling all player-specific behaviours
 class Player {
+    /// Internal player ID used for debugging
+    unsigned int id;
+
     /// Stores the shift register output indexes for each LED
     unsigned int ledIndexes[3];
     /// Stores the shift register output indexes for the point gained LED
@@ -41,8 +40,14 @@ private:
     /// Sets the corresponding ledStates bitflag to true
     void setLedOn(unsigned int shiftRegisterIndex);
 
+    /// Serial prints 'Player [id]
+    void printPlayerName();
+
 public:
-    Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin, unsigned long* interval);
+    Player(unsigned int id,
+           unsigned int ledIndexes[3], unsigned int successLedIndex,
+           pin inputPin,
+           unsigned long* interval);
 
     void randomiseTarget();
 

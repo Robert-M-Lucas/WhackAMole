@@ -1,7 +1,3 @@
-//
-// Created by rober on 28/10/2023.
-//
-
 #include "Player.h"
 #include <Arduino.h>
 #include "definitions.h"
@@ -9,8 +5,14 @@
 #include "piezo.h"
 
 
-Player::Player(unsigned int ledIndexes[3], unsigned int successLedIndex, pin inputPin, unsigned long* interval):
-    ledIndexes{ledIndexes[0], ledIndexes[1], ledIndexes[2]}, successLedIndex(successLedIndex), inputPin(inputPin), interval(interval) {
+Player::Player(unsigned int id,
+               unsigned int ledIndexes[3], unsigned int successLedIndex,
+               pin inputPin,
+               unsigned long* interval):
+    id(id),
+    ledIndexes{ledIndexes[0], ledIndexes[1], ledIndexes[2]}, successLedIndex(successLedIndex),
+    inputPin(inputPin),
+    interval(interval) {
     pinMode(inputPin, INPUT);
 }
 
@@ -47,13 +49,19 @@ void Player::update(unsigned long tick) {
                 lastPointScored = true;
                 score += 1;
                 *interval -= INTERVAL_DECREMENT_ON_POINT; // Adjust difficulty
+                printPlayerName();
+                Serial.print(" scored. New score: ");
+                Serial.println(score);
                 play_point_scored_sound();
             }
             // No point scored
             else {
                 lastPointScored = false;
                 score -= 1;
+                if (score < -9) score = -9;
                 *interval += INTERVAL_DECREMENT_ON_POINT; // Adjust difficulty
+                Serial.print(" lost a point. New score: ");
+                Serial.println(score);
                 play_point_lost_sound();
             }
 
@@ -90,8 +98,17 @@ uint8_t Player::getLedBitFlags() const {
 
 void Player::randomiseTarget() {
     target = (int) random(3);
+    printPlayerName();
+    Serial.print(" new target: ");
+    Serial.println(target);
 }
 
 int Player::getScore() const {
     return score;
+}
+
+void Player::printPlayerName() {
+    Serial.print("Player [");
+    Serial.print(id);
+    Serial.print("]");
 }

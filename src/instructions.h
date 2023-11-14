@@ -1,7 +1,3 @@
-//
-// Created by robertlucas on 02/11/23.
-//
-
 #ifndef WHACKAMOLE_INSTRUCTIONS_H
 #define WHACKAMOLE_INSTRUCTIONS_H
 

@@ -5,6 +5,7 @@
 #ifndef WHACKAMOLE_CONSTANTS_H
 #define WHACKAMOLE_CONSTANTS_H
 
+#include <Arduino.h>
 #include "definitions.h"
 
 /// Score needed to win
@@ -24,6 +25,8 @@ const unsigned long MAXIMUM_DIFFICULTY = 500;
 const unsigned long MINIMUM_GAMEPLAY_DIFFICULTY = 180;
 const unsigned long MAXIMUM_GAMEPLAY_DIFFICULTY = 600;
 const unsigned long DIFFICULTY_PICK_TIME_MS = 10000;
+/// Interval adjustment after a point is won/lost
+const unsigned long INTERVAL_DECREMENT_ON_POINT = 5;
 
 const pin P1_BTN = 10;
 const pin P2_BTN = 9;
@@ -38,7 +41,8 @@ const unsigned long SHOW_TARGET_TIME = 3000;
 const unsigned long TARGET_BLINK_INTERVAL = 500;
 /// Time spent with all LED off after showing a target
 const unsigned long ALL_LEDS_OFF_PERIOD = 1000;
-/// Interval adjustment after a point is won/lost
-const unsigned long INTERVAL_DECREMENT_ON_POINT = 5;
+
+
+void print_config();
 
 #endif //WHACKAMOLE_CONSTANTS_H
